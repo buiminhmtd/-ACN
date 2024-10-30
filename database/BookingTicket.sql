@@ -20,8 +20,7 @@ Create table [Admin]
 )
 Go
 
-Insert into [Admin] values('Admin', 'c4ca4238a0b923820dcc509a6f75849b', 'Pham Ngoc Tuan', '12/28/1992', 'Vp', '0123456789', 'Tuanxh12a2@gmail.com')
-Go
+
 
 --Table Customer
 Create table Customer
