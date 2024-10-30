@@ -1,5 +1,3 @@
---Created 11/24/2013
---Create DB
 Create Database BookingTicket
 Go
 Use BookingTicket
