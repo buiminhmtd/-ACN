@@ -1,0 +1,192 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="MyWeb.Site1" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <script src="Js/jquery-1.4.2.min.js"></script>
+    <script src="Js/jquery-ui-1.8.9.custom.min.js"></script>
+    <script src="Js/jquery.mousewheel.min.js"></script>
+    <script src="Js/jquery.jscrollpane.min.js"></script>
+    <script src="ckfinder/ckfinder.js"></script>
+    <script src="Js/mwheelIntent.js"></script>
+    <script src="Js/demo.js"></script>
+    <script src="Js/library.full.js"></script>
+    <link href="App_Themes/Default/jquery.jscrollpane.min.css" rel="stylesheet" />
+    <link href="Js/ui-lightness/jquery-ui-1.8.9.custom.min.css" rel="stylesheet" />
+    <link href="App_Themes/Default/core.min.css" rel="stylesheet" />
+    <script>
+        $(function () {
+            $('.neoslideshow img:gt(0)').hide();
+            setInterval(function () {
+                $('.neoslideshow :first-child').fadeOut().next('img').fadeIn().end().appendTo('.neoslideshow');
+            }, 4000);
+        });
+
+        //$(document).ready(function () {
+        //    $('.nav-item .link').click(function () {
+        //        $('.active').removeClass('active');
+        //        $(this).addClass('active');
+        //    });
+        //});
+        
+        $(document).ready(function () {
+            $("#search-tabs .tab li:first").addClass("activeTab");
+            $("#search-tabs .tab-content:gt(0)").hide();
+            $("#search-tabs .tab li").click(function () {
+                $("#search-tabs .tab li").removeClass('activeTab');
+                //var current_index = $(this).index(); // Sử dụng cho jQuery >= 1.4.x
+                var currentIndex = $("#search-tabs .tab li").index(this);
+                $("#search-tabs .tab li:eq(" + currentIndex + ")").addClass("activeTab");
+                $("#search-tabs .tab-content").hide();
+                $("#search-tabs .tab-content:eq(" + currentIndex + ")").fadeIn(100);
+            });
+        });
+    </script>
+    <script type="text/javascript" id="sourcecode">
+        $(function () {
+            $('.jspContainer').jScrollPane(
+                {
+                    showArrows: true,
+                    horizontalGutter: 30,
+                    verticalGutter: 30
+                }
+            );
+        });
+    </script>
+</head>
+<body>
+
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        <div id="wrapper">
+            <div class="container">
+                <div id="header">
+                    <a class="logo" href="Default.aspx">
+                        <img src="App_Themes/Default/images/logo_40.png" alt="" width="290" height="70">
+                    </a>
+                    <div class="nav-item">
+                        <a class="link" href="Movie.aspx">ABOUT US</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="link" href="#">SHOWTIME</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="link" href="Movie.aspx">MOVIE</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="link" href="Cinema.aspx">CINEMA</a>
+                    </div>
+                    <%--<div class="nav-item">
+                        <a class="link" href="#">FEEDBACK</a>
+                    </div>--%>
+                    <asp:Label runat="server" ID="lblLogin">
+                        <div class="nav-item">
+                            <a class="link" href="Login.aspx">LOGIN</a>
+                        </div>
+                        <div class="nav-item">
+                            <a class="link" href="Register.aspx">REGISTER</a>
+                        </div>
+                    </asp:Label>
+                    <asp:Label runat="server" ID="lblSuccess">
+                        <div class="nav-item">
+                            <a class="link" href="#">
+                                <asp:Label ID="lblUsername" runat="server"></asp:Label></a>
+                            <div class="nav-dropdown">
+                                <ul>
+                                    <li><a href="Information.aspx">Information</a></li>
+                                    <li><a href="ChangePassword.aspx">Change Password</a></li>
+                                    <li>
+                                        <asp:LinkButton ID="lbtOut" runat="server" OnClick="lbtOut_Click">Logout</asp:LinkButton></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </asp:Label>
+                </div>
+            </div>
+            <div class="container">
+                <div id="main-banner">
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder" runat="server"></asp:ContentPlaceHolder>
+                </div>
+                <div class="content">
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+                <div class="sidebar">
+                    <%--<div class="group" id="search-box">
+                        <div class="group-title"><span class="title"><a href="#">SEARCH MOVIE</a></span></div>
+                        <div class="block-secondary">
+                            <asp:DropDownList ID="ddlCinema" runat="server"></asp:DropDownList><br />
+                            <asp:DropDownList ID="ddlFilm" runat="server"></asp:DropDownList><br />
+                            <br />
+                            <asp:Button ID="btnSearch" runat="server" CssClass="btnSearch" Text="Search" />
+                            <br />
+                            <br />
+                            <br />
+                        </div>
+                    </div>--%>
+                    <div id="sidebar-ranking" class="group">
+                        <div class="group-title">
+                            <span class="title">
+                                <a href="#">CHARTS</a>
+                            </span>
+                        </div>
+
+                        <asp:Repeater runat="server" ID="rptMovie">
+                            <ItemTemplate>
+                                <ul class="bxh-sidebar">
+                                    <li>
+                                        <a href="#">
+                                            <div class="rank r1"></div>
+                                            <asp:Image ID="Imagethumb" runat="server" width="40" height="50" ImageUrl='<%# Eval("Picture") %>' CssClass="thumb" />
+                                            <div class="name">
+                                                <asp:HyperLink ID="hlNameFilm" runat="server" Text='<%# Eval("NameF") %>' NavigateUrl='<%# String.Format("~/Detail.aspx?&id={0}", Eval("FilId")) %>'></asp:HyperLink>
+                                                <div style="font-size: 11px; font-style: italic; font-weight: normal"><asp:Label runat="server" Text='<%# Eval("View") %>' ID="lblView"></asp:Label> View</div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer">
+            <div class="flinks">
+                <div class="container">
+                    <div class="left-block">
+                        <a href="#">SHOWTIME</a>
+                        <a href="#">MOVIE</a>
+                        <a href="#">CINEMA</a>
+                        <a href="#">RECRUITMENT</a>
+                    </div>
+                    <div class="right-block">
+                        <a href="#">ABOUT US</a>
+                        <a href="#">GUIDE</a>
+                        <a href="#">FEEDBACK</a>
+                    </div>
+                </div>
+            </div>
+            <div class="fbrands">
+                <div class="container">
+                    <div class="left-block brand">
+                        <img src="App_Themes/Default/images/avatar.gif" width="40" height="40">
+                        <div>
+                            <b>Powered by </b>: PhamNgocTuan
+                            <br>
+                            <b>Email</b>: Tuanxh12a2@gmail<br>
+                            <b>Telephone</b>: 0963001292<br>
+                            <br>
+                            <b>Company</b>: Software technology company TA-Groups<br>
+                            <b>Address</b>: Ha Noi-Viet Nam<br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

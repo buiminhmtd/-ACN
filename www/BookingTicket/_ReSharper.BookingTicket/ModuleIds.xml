@@ -1,0 +1,6 @@
+<Modules>
+  <Module PersistentId="C3F3970A-90D5-4F72-8BB1-4F8FADAE2576" ModuleId="MyWeb.Common" />
+  <Module PersistentId="34B461DE-9FED-4F62-A196-298E1AC4492E" ModuleId="MyWeb.Data" />
+  <Module PersistentId="1EEA4059-D3B1-4F1C-9CD9-67BD18DE4215" ModuleId="MyWeb.Business" />
+  <Module PersistentId="9732EC75-9018-4239-9212-B26D94829494" ModuleId="MyWeb" />
+</Modules>

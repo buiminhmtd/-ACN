@@ -1,0 +1,23 @@
+C:\Users\tuanx_000\Desktop\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\bin\Debug\MyWeb.Business.dll
+C:\Users\tuanx_000\Desktop\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\bin\Debug\MyWeb.Business.pdb
+C:\Users\tuanx_000\Desktop\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\bin\Debug\MyWeb.Data.dll
+C:\Users\tuanx_000\Desktop\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\bin\Debug\MyWeb.Data.pdb
+C:\Users\tuanx_000\Desktop\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\obj\Debug\MyWeb.Business.csprojResolveAssemblyReference.cache
+C:\Users\tuanx_000\Desktop\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\obj\Debug\MyWeb.Business.dll
+C:\Users\tuanx_000\Desktop\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\obj\Debug\MyWeb.Business.pdb
+E:\Working\Project\Source Code\NET\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\bin\Debug\MyWeb.Business.dll
+E:\Working\Project\Source Code\NET\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\bin\Debug\MyWeb.Business.pdb
+E:\Working\Project\Source Code\NET\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\bin\Debug\MyWeb.Data.dll
+E:\Working\Project\Source Code\NET\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\bin\Debug\MyWeb.Data.pdb
+E:\Working\Project\Source Code\NET\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\obj\Debug\MyWeb.Business.csprojResolveAssemblyReference.cache
+E:\Working\Project\Source Code\NET\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\obj\Debug\MyWeb.Business.dll
+E:\Working\Project\Source Code\NET\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\obj\Debug\MyWeb.Business.pdb
+F:\ky7\DoAn\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\bin\Debug\MyWeb.Business.dll
+F:\ky7\DoAn\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\bin\Debug\MyWeb.Business.pdb
+F:\ky7\DoAn\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\bin\Debug\MyWeb.Data.dll
+F:\ky7\DoAn\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\bin\Debug\MyWeb.Data.pdb
+F:\ky7\DoAn\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\obj\Debug\MyWeb.Business.csproj.AssemblyReference.cache
+F:\ky7\DoAn\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\obj\Debug\MyWeb.Business.csproj.CoreCompileInputs.cache
+F:\ky7\DoAn\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\obj\Debug\MyWeb.Business.csproj.CopyComplete
+F:\ky7\DoAn\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\obj\Debug\MyWeb.Business.dll
+F:\ky7\DoAn\Booking Ticket 26112013\www\BookingTicket\MyWeb.Business\obj\Debug\MyWeb.Business.pdb
