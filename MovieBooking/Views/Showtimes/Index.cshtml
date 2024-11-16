@@ -1,0 +1,52 @@
+﻿@model IEnumerable<MovieBooking.Models.Showtime>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmins.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Movy.title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Screen.screen_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.start_time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.end_time)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Movy.title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Screen.screen_id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.start_time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.end_time)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.showtime_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.showtime_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.showtime_id })
+        </td>
+    </tr>
+}
+
+</table>
