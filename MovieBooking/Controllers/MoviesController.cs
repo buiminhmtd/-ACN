@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
+using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
+using System.Web.UI.WebControls;
 using MovieBooking.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MovieBooking.Controllers
 {
@@ -30,6 +36,20 @@ namespace MovieBooking.Controllers
 
         // GET: Movies/Details/5
         public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Movie movie = db.Movies.Find(id);
+            if (movie == null)
+            {
+                return HttpNotFound();
+            }
+            return View(movie);
+        }
+
+        public ActionResult MovieDetails(int? id)
         {
             if (id == null)
             {
@@ -219,3 +239,4 @@ namespace MovieBooking.Controllers
         }
     }
 }
+

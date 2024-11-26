@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing;
 using System.Linq;
 using System.Net;
+using System.Reflection;
+using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
+using System.Web.UI.WebControls;
 using MovieBooking.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MovieBooking.Controllers
 {
@@ -35,6 +41,7 @@ namespace MovieBooking.Controllers
             }
             return View(booking);
         }
+
 
         // GET: Bookings/Create
         public ActionResult Create()
@@ -159,3 +166,5 @@ namespace MovieBooking.Controllers
         }
     }
 }
+
+
