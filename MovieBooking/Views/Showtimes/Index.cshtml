@@ -1,52 +1,48 @@
 ﻿@model IEnumerable<MovieBooking.Models.Showtime>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Danh Sách Lịch Chiếu";
     Layout = "~/Views/Shared/_LayoutAdmins.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Quản Lý Lịch Chiếu</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Movy.title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Screen.screen_id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.start_time)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.end_time)
-        </th>
-        <th></th>
-    </tr>
+<div class="mb-3">
+    <a href="@Url.Action("Create", "Showtimes")" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Thêm Suất Chiếu
+    </a>
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Movy.title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Screen.screen_id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.start_time)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.end_time)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.showtime_id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.showtime_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.showtime_id })
-        </td>
-    </tr>
-}
-
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Phim</th>
+            <th>Màn Hình</th>
+            <th>Thời Gian Bắt Đầu</th>
+            <th>Thời Gian Kết Thúc</th>
+            <th style="text-align: center">Thao Tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Movy.title)</td>
+                <td>@Html.DisplayFor(modelItem => item.Screen.screen_id)</td>
+                <td>@Html.DisplayFor(modelItem => item.start_time)</td>
+                <td>@Html.DisplayFor(modelItem => item.end_time)</td>
+                <td class="text-center">
+                    <a href="@Url.Action("Edit", "Showtimes", new { id = item.movie_id })" class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil-square"></i> Sửa
+                    </a>
+                    <a href="@Url.Action("Details", "Showtimes", new { id = item.movie_id })" class="btn btn-info btn-sm">
+                        <i class="bi bi-info-circle"></i> Chi tiết
+                    </a>
+                    <a href="@Url.Action("Delete", "Showtimes", new { id = item.movie_id })" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i> Xóa
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
