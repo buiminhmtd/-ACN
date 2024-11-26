@@ -21,6 +21,13 @@ namespace MovieBooking.Controllers
             return View(db.Movies.ToList());
         }
 
+        public ActionResult MovieList()
+        {
+            var movies = db.Movies.ToList();
+            return View(movies);
+        }
+
+
         // GET: Movies/Details/5
         public ActionResult Details(int? id)
         {
@@ -155,6 +162,60 @@ namespace MovieBooking.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult Comments(int? movieId)
+        {
+            var comments = db.Feedbacks
+                .Where(f => f.movie_id == movieId)
+                .OrderByDescending(f => f.feedback_date)
+                .Select(f => new
+                {
+                    f.User.username,
+                    f.comments,
+                    f.feedback_date
+                }).ToList();
+
+            return Json(comments, JsonRequestBehavior.AllowGet);
+        }
+
+        // Thêm bình luận
+        [HttpPost]
+        public ActionResult AddComment(int movieId, string comment)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return new HttpStatusCodeResult(401, "Bạn cần đăng nhập để bình luận.");
+            }
+
+            // Lấy UserId hiện tại
+            var userId = db.Users
+                .Where(u => u.username == User.Identity.Name)
+                .Select(u => u.user_id)
+                .FirstOrDefault();
+
+            // Kiểm tra người dùng đã xem phim chưa
+            bool hasWatched = db.Bookings
+                .Any(b => b.user_id == userId && b.Showtime.movie_id == movieId);
+
+            if (!hasWatched)
+            {
+                return new HttpStatusCodeResult(403, "Bạn chỉ có thể bình luận khi đã xem phim.");
+            }
+
+            // Lưu bình luận
+            var feedback = new Feedback
+            {
+                user_id = userId,
+                movie_id = movieId,
+                comments = comment,
+                feedback_date = DateTime.Now
+            };
+
+            db.Feedbacks.Add(feedback);
+            db.SaveChanges();
+
+            return Json(new { success = true, message = "Bình luận đã được thêm." });
         }
     }
 }

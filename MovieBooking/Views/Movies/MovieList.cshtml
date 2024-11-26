@@ -1,0 +1,74 @@
+﻿@model IEnumerable<MovieBooking.Models.Movie>
+
+
+@{
+    ViewBag.Title = "MovieList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>MovieList</h2>    ViewBag.Title = "Danh sách phim";
+}
+
+<h2>Danh sách phim</h2>
+
+<div class="movies-container">
+    @foreach (var movie in Model)
+    {
+        <div class="movie-card">
+            <img src="@Url.Content("~/Content/Images/" + movie.image_url)" alt="@movie.title" class="movie-poster">
+            <h3>@movie.title</h3>
+            <p>@movie.description</p>
+            <a href="@Url.Action("Details", "Movies", new { id = movie.movie_id })" class="btn btn-primary">Xem chi tiết</a>
+        </div>
+    }
+</div>
+
+<style>
+    .movies-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .movie-card {
+        width: 250px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        background-color: #fff;
+    }
+
+    .movie-poster {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+    }
+
+    .movie-card h3 {
+        margin: 10px 0;
+    }
+
+    .movie-card p {
+        padding: 0 10px;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        margin: 10px 0;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+

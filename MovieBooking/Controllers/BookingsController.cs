@@ -132,5 +132,30 @@ namespace MovieBooking.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public ActionResult History(int customerId)
+        {
+            var history = (from b in db.Bookings
+                           join bd in db.Booking_Details on b.booking_id equals bd.booking_id
+                           join m in db.Movies on b.showtime_id equals m.movie_id
+                           where b.user_id == customerId
+                           group new { b, bd, m } by new
+                           {
+                               b.booking_id,
+                               m.movie_id,
+                               b.total_amount,
+                               b.booking_date
+                           } into g
+                           select new
+                           {
+                               BookingID = g.Key.booking_id,
+                               MovieName = g.Key.movie_id,
+                               TotalPrice = g.Key.total_amount,
+                               BookingDate = g.Key.booking_date,
+                               SeatCount = g.Sum(x => x.bd.seat_id)
+                           }).ToList();
+
+            return View(history);
+        }
     }
 }
