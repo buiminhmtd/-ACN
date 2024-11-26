@@ -19,7 +19,7 @@ namespace MovieBooking.Controllers
         {
             return View(db.Admins.ToList());
         }
-
+        
         public ActionResult BillTracking()
         {
             var bookings = db.Bookings.Include(b => b.Showtime).Include(b => b.User);

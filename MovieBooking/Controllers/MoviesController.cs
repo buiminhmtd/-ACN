@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -46,17 +47,36 @@ namespace MovieBooking.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "movie_id,title,description,duration,genre,release_date,image_url")] Movie movie)
+        public ActionResult Create([Bind(Include = "movie_id,title,description,duration,genre,release_date,image_url")] Movie movie, HttpPostedFileBase image_url)
         {
             if (ModelState.IsValid)
             {
+                // Kiểm tra nếu có tệp hình ảnh được tải lên
+                if (image_url != null && image_url.ContentLength > 0)
+                {
+                    // Tạo tên tệp duy nhất để tránh trùng lặp
+                    var fileName = Path.GetFileName(image_url.FileName);
+                    var filePath = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
+
+                    // Lưu tệp ảnh vào thư mục
+                    image_url.SaveAs(filePath);
+
+                    // Lưu URL của ảnh vào thuộc tính model
+                    movie.image_url = "/Content/Images/" + fileName;
+                }
+
+                // Thêm movie vào cơ sở dữ liệu và lưu
                 db.Movies.Add(movie);
                 db.SaveChanges();
+
+                // Chuyển hướng về trang danh sách phim
                 return RedirectToAction("Index");
             }
 
+            // Nếu model không hợp lệ, hiển thị lại form
             return View(movie);
         }
+
 
         // GET: Movies/Edit/5
         public ActionResult Edit(int? id)
@@ -78,16 +98,29 @@ namespace MovieBooking.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "movie_id,title,description,duration,genre,release_date,image_url")] Movie movie)
+        public ActionResult Edit([Bind(Include = "movie_id,title,description,duration,genre,release_date,image_url")] Movie movie, HttpPostedFileBase image_url)
         {
             if (ModelState.IsValid)
             {
+                // Kiểm tra nếu người dùng tải lên ảnh mới
+                if (image_url != null && image_url.ContentLength > 0)
+                {
+                    // Xóa ảnh cũ (nếu cần) và lưu ảnh mới
+                    var fileName = Path.GetFileName(image_url.FileName);
+                    var path = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
+                    image_url.SaveAs(path);
+
+                    movie.image_url = "/Content/Images/" + fileName;
+                }
+                // Cập nhật thông tin phim trong cơ sở dữ liệu
                 db.Entry(movie).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             return View(movie);
         }
+
 
         // GET: Movies/Delete/5
         public ActionResult Delete(int? id)
