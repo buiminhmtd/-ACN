@@ -126,6 +126,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminsController.cs" />
     <Compile Include="Controllers\BookingsController.cs" />
+    <Compile Include="Controllers\FeaturedShowingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Controllers\ScreensController.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\Booking_Details.cs" />
     <Compile Include="Models\Featured_Showings.cs" />
+    <Compile Include="Models\FeaturedShowingsViewModel.cs" />
     <Compile Include="Models\Feedback.cs" />
     <Compile Include="Models\BookingModel.cs" />
     <Compile Include="Models\Movie.cs" />
@@ -246,6 +248,9 @@
     <Content Include="Views\Movies\View.cshtml" />
     <Content Include="Views\Movies\MovieDetails.cshtml" />
     <Content Include="Views\Home\MovieList.cshtml" />
+    <Content Include="Views\FeaturedShowings\AddSlide.cshtml" />
+    <Content Include="Views\FeaturedShowings\EditSlide.cshtml" />
+    <Content Include="Views\FeaturedShowings\ManageSlides.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

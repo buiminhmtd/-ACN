@@ -1,0 +1,48 @@
+﻿@using MovieBooking.Models
+
+@{
+    ViewBag.Title = "ManageSlides";
+    Layout = "~/Views/Shared/_LayoutAdmins.cshtml";
+}
+
+@model List<MovieBooking.Models.FeaturedShowingsViewModel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Phim</th>
+            <th>Ngày bắt đầu</th>
+            <th>Ngày kết thúc</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var slide in Model)
+        {
+            <tr>
+                <td>@slide.movie_title</td>  <!-- Lấy title từ Movie -->
+                <td>
+                    @if (slide.start_date is DateTime startDate)
+                    {
+                        @startDate.ToString("dd/MM/yyyy")
+                    }
+                </td>
+                <td>
+                    @if (@slide.end_date is DateTime endDate)
+                    {
+                        @endDate.ToString("dd/MM/yyyy")
+                    }
+                </td>
+                <td>@(slide.is_active == true ? "Đang hoạt động" : "Không hoạt động")</td>
+                <td>
+                    <a href="@Url.Action("EditSlide", "FeaturedShowings", new { id = slide.feature_id })" class="btn btn-warning">Sửa</a>
+                    <a href="@Url.Action("DeleteSlide", "FeaturedShowings", new { id = slide.feature_id })" class="btn btn-danger">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("AddSlide", "FeaturedShowings")" class="btn btn-success">Thêm Slide</a>
+

@@ -11,7 +11,7 @@ namespace MovieBooking.Models
         [Key]
         public int feature_id { get; set; }
 
-        public int? movie_id { get; set; }
+        public int movie_id { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime? start_date { get; set; }
@@ -19,8 +19,9 @@ namespace MovieBooking.Models
         [Column(TypeName = "date")]
         public DateTime? end_date { get; set; }
 
-        public bool? is_active { get; set; }
+        public bool is_active { get; set; }
 
         public virtual Movie Movy { get; set; }
+
     }
 }

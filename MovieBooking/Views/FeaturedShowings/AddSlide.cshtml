@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "AddSlide";
+    Layout = "~/Views/Shared/_LayoutAdmins.cshtml";
+}
+
+@model MovieBooking.Models.FeaturedShowingsViewModel
+
+<h2>Thêm slide</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        <label for="movie_id">Phim:</label>
+        @Html.DropDownListFor(model => model.movie_id,
+            new SelectList(Model.MoviesList, "movie_id", "title"),
+            "Chọn phim",
+            new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.movie_id)
+    </div>
+
+    <div class="form-group">
+        <label for="start_date">Ngày Bắt Đầu:</label>
+        @Html.TextBoxFor(model => model.start_date, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.start_date)
+    </div>
+
+    <div class="form-group">
+        <label for="end_date">Ngày Kết Thúc:</label>
+        @Html.TextBoxFor(model => model.end_date, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.end_date)
+    </div>
+
+    <div class="form-group">
+        <label for="is_active">Trạng Thái Hoạt Động:</label>
+        @Html.CheckBoxFor(model => model.is_active)
+        @Html.ValidationMessageFor(model => model.is_active)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Thêm Slide</button>
+    <a href="@Url.Action("ManageSlides")" class="btn btn-secondary">Hủy</a>
+}
+
