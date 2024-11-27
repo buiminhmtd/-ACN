@@ -141,6 +141,7 @@
     <Compile Include="Models\Feedback.cs" />
     <Compile Include="Models\BookingModel.cs" />
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\MovieDetailsViewModel.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\Screen.cs" />
     <Compile Include="Models\Seat.cs" />
@@ -243,9 +244,8 @@
     <Content Include="Views\Screens\Edit.cshtml" />
     <Content Include="Views\Screens\Index.cshtml" />
     <Content Include="Views\Movies\View.cshtml" />
-    <Content Include="Views\Movies\Comments.cshtml" />
-    <Content Include="Views\Movies\MovieList.cshtml" />
     <Content Include="Views\Movies\MovieDetails.cshtml" />
+    <Content Include="Views\Home\MovieList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

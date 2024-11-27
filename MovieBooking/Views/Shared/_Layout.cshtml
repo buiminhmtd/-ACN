@@ -12,8 +12,8 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            color: white;
+            font-family: Arial, sans-serif !important;
+            color: #fff !important;
             min-height: 100vh;
             background-image: url("../../images/ft-bg.jpg");
             background-repeat: repeat-x; /* Lặp lại theo chiều dọc */
@@ -83,7 +83,7 @@
         }
 
         .nav-link {
-            color: white;
+            color: white !important;
             text-decoration: none;
             padding: 0.5rem 1rem;
             transition: color 0.3s;
@@ -188,6 +188,8 @@
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Movie List", "MovieList", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+
                 </ul>
 
                 <div class="auth-buttons">

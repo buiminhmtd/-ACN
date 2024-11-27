@@ -14,12 +14,18 @@ using Microsoft.Ajax.Utilities;
 using System.Web.UI.WebControls;
 using MovieBooking.Models;
 using static System.Net.Mime.MediaTypeNames;
+using System.Runtime.Remoting.Contexts;
+using System.Security.Claims;
+using System.Web.UI;
 
 namespace MovieBooking.Controllers
 {
     public class MoviesController : Controller
     {
+
         private BookingModel db = new BookingModel();
+
+
 
         // GET: Movies
         public ActionResult Index()
@@ -49,18 +55,52 @@ namespace MovieBooking.Controllers
             return View(movie);
         }
 
-        public ActionResult MovieDetails(int? id)
+        public ActionResult MovieDetails(int? id, int page = 1)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            // Lấy thông tin bộ phim
             Movie movie = db.Movies.Find(id);
             if (movie == null)
             {
                 return HttpNotFound();
             }
-            return View(movie);
+
+            // Lấy danh sách bình luận (giới hạn 5 bình luận mỗi trang)
+            var comments = db.Feedbacks
+                .Where(f => f.movie_id == id)
+                .OrderByDescending(f => f.feedback_date)
+                .Skip((page - 1) * 5)  // Bắt đầu từ trang 1
+                .Take(5)  // Lấy tối đa 5 bình luận
+                .ToList();
+
+            // Kiểm tra xem người dùng đã đặt vé chưa
+            int userId;
+            bool hasBookedTicket;
+            if (int.TryParse(User.Identity.Name, out userId))
+            {
+                hasBookedTicket = db.Bookings
+                    .Join(db.Showtimes, b => b.showtime_id, s => s.showtime_id, (b, s) => new { b, s })
+                    .Any(bs => bs.s.movie_id == id && bs.b.user_id == userId);
+            }
+            else
+            {
+                // Nếu không chuyển được User.Identity.Name sang kiểu int, xem như người dùng chưa đăng nhập hoặc ID không hợp lệ
+                hasBookedTicket = false;
+            }
+
+            // Tạo ViewModel và truyền vào View
+            var viewModel = new MovieDetailsViewModel
+            {
+                Movie = movie,
+                HasBookedTicket = hasBookedTicket,
+                Feedbacks = comments
+            };
+
+            return View(viewModel);
         }
 
         // GET: Movies/Create
@@ -184,49 +224,47 @@ namespace MovieBooking.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult Comments(int? movieId)
-        {
-            var comments = db.Feedbacks
-                .Where(f => f.movie_id == movieId)
-                .OrderByDescending(f => f.feedback_date)
-                .Select(f => new
-                {
-                    f.User.username,
-                    f.comments,
-                    f.feedback_date
-                }).ToList();
 
-            return Json(comments, JsonRequestBehavior.AllowGet);
-        }
-
-        // Thêm bình luận
+        // Xử lý gửi bình luận
         [HttpPost]
-        public ActionResult AddComment(int movieId, string comment)
+        [ValidateAntiForgeryToken]
+        public ActionResult PostComment(int movieId, string comment)
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(401, "Bạn cần đăng nhập để bình luận.");
+                // Nếu người dùng chưa đăng nhập, thông báo lỗi
+                TempData["ErrorMessage"] = "Bạn phải đăng nhập để gửi bình luận.";
+                return RedirectToAction("MovieDetails", new { id = movieId });
             }
 
-            // Lấy UserId hiện tại
-            var userId = db.Users
-                .Where(u => u.username == User.Identity.Name)
-                .Select(u => u.user_id)
-                .FirstOrDefault();
-
-            // Kiểm tra người dùng đã xem phim chưa
-            bool hasWatched = db.Bookings
-                .Any(b => b.user_id == userId && b.Showtime.movie_id == movieId);
-
-            if (!hasWatched)
+            int userId;
+            bool hasBookedTicket;
+            if (int.TryParse(User.Identity.Name, out userId))
             {
-                return new HttpStatusCodeResult(403, "Bạn chỉ có thể bình luận khi đã xem phim.");
+                hasBookedTicket = db.Bookings
+                    .Join(db.Showtimes, b => b.showtime_id, s => s.showtime_id, (b, s) => new { b, s })
+                    .Any(bs => bs.s.movie_id == movieId && bs.b.user_id == userId);
+            }
+            else
+            {
+                // Nếu không chuyển được User.Identity.Name sang kiểu int, xem như người dùng chưa đăng nhập hoặc ID không hợp lệ
+                hasBookedTicket = false;
             }
 
-            // Lưu bình luận
+            // Kiểm tra nếu người dùng đã đặt vé xem phim
+            
+
+            if (!hasBookedTicket)
+            {
+                // Nếu chưa đặt vé, thông báo lỗi
+                TempData["ErrorMessage"] = "Bạn phải xem phim trước khi bình luận.";
+                return RedirectToAction("MovieDetails", new { id = movieId });
+            }
+
+            // Tạo và lưu bình luận mới
             var feedback = new Feedback
             {
-                user_id = userId,
+                user_id = int.Parse(User.Identity.Name),
                 movie_id = movieId,
                 comments = comment,
                 feedback_date = DateTime.Now
@@ -235,8 +273,12 @@ namespace MovieBooking.Controllers
             db.Feedbacks.Add(feedback);
             db.SaveChanges();
 
-            return Json(new { success = true, message = "Bình luận đã được thêm." });
+            // Thông báo thành công
+            TempData["SuccessMessage"] = "Bình luận của bạn đã được gửi thành công!";
+            return RedirectToAction("MovieDetails", new { id = movieId });
         }
     }
+
 }
+
 
