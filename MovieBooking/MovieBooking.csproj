@@ -183,6 +183,7 @@
     <Content Include="images\a10.jpg" />
     <Content Include="images\a11.jpg" />
     <Content Include="images\ft-bg.jpg" />
+    <Content Include="images\logo2.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -251,6 +252,7 @@
     <Content Include="Views\FeaturedShowings\AddSlide.cshtml" />
     <Content Include="Views\FeaturedShowings\EditSlide.cshtml" />
     <Content Include="Views\FeaturedShowings\ManageSlides.cshtml" />
+    <Content Include="Views\Home\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
