@@ -44,5 +44,43 @@ namespace MovieBooking.Controllers
             return View(db.Movies.ToList());
 
         }
+        public ActionResult Search(string query, string genre, DateTime? release_date)
+        {
+            if (string.IsNullOrEmpty(query) && string.IsNullOrEmpty(genre) && !release_date.HasValue)
+            {
+                return RedirectToAction("MovieList");
+            }
+
+            // Tìm kiếm theo nhiều tiêu chí
+            var result = db.Movies.AsQueryable();
+
+            // Tìm kiếm theo tên phim hoặc mô tả
+            if (!string.IsNullOrEmpty(query))
+            {
+                result = result.Where(m => m.title.Contains(query) || m.description.Contains(query));
+            }
+
+            // Tìm kiếm theo thể loại
+            if (!string.IsNullOrEmpty(genre))
+            {
+                result = result.Where(m => m.genre.Contains(genre));
+            }
+
+            // Tìm kiếm theo năm phát hành
+            if (release_date.HasValue)
+            {
+                result = result.Where(m => m.release_date == release_date.Value);
+            }
+
+            // Nếu không có kết quả, thông báo lỗi
+            if (!result.Any())
+            {
+                ViewBag.ErrorMessage = "Không tìm thấy phim nào khớp với từ khóa của bạn.";
+            }
+
+            return View("Search", result.ToList());
+        }
+
+
     }
 }
