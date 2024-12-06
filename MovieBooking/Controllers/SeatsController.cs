@@ -10,116 +10,112 @@ using MovieBooking.Models;
 
 namespace MovieBooking.Controllers
 {
-    public class AdminsController : Controller
+    public class SeatsController : Controller
     {
         private BookingModel db = new BookingModel();
 
-        // GET: Admins
+        // GET: Seats
         public ActionResult Index()
         {
-            return View(db.Admins.ToList());
-        }
-        
-        public ActionResult BillTracking()
-        {
-            var bookings = db.Bookings.Include(b => b.Showtime).Include(b => b.User);
-            return View(bookings.ToList());
-        }
-        public ActionResult Details_booking(int? id)
-        {
-            var details = db.Booking_Details.Where(p => p.booking_id == id);
-            return View(details.ToList());
+            var seats = db.Seats.Include(s => s.Screen);
+            return View(seats.ToList());
         }
 
-        [HttpPost]
-        
-        // GET: Admins/Details/5
+        // GET: Seats/Details/5
         public ActionResult Details(int? id)
         {
-            var details = db.Booking_Details.Where(p => p.booking_id == id);
-            //if (details == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            return View(details.ToList());
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Seat seat = db.Seats.Find(id);
+            if (seat == null)
+            {
+                return HttpNotFound();
+            }
+            return View(seat);
         }
 
-        // GET: Admins/Create
+        // GET: Seats/Create
         public ActionResult Create()
         {
+            ViewBag.screen_id = new SelectList(db.Screens, "screen_id", "screen_id");
             return View();
         }
 
-        // POST: Admins/Create
+        // POST: Seats/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AdmId,Username,Pass,FullName,Bod,Address,Phone,Email")] Admin admin)
+        public ActionResult Create([Bind(Include = "seat_id,screen_id,seat_row,seat_number")] Seat seat)
         {
             if (ModelState.IsValid)
             {
-                db.Admins.Add(admin);
+                db.Seats.Add(seat);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(admin);
+            ViewBag.screen_id = new SelectList(db.Screens, "screen_id", "screen_id", seat.screen_id);
+            return View(seat);
         }
 
-        // GET: Admins/Edit/5
+        // GET: Seats/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Admin admin = db.Admins.Find(id);
-            if (admin == null)
+            Seat seat = db.Seats.Find(id);
+            if (seat == null)
             {
                 return HttpNotFound();
             }
-            return View(admin);
+            ViewBag.screen_id = new SelectList(db.Screens, "screen_id", "screen_id", seat.screen_id);
+            return View(seat);
         }
 
-        // POST: Admins/Edit/5
+        // POST: Seats/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "AdmId,Username,Pass,FullName,Bod,Address,Phone,Email")] Admin admin)
+        public ActionResult Edit([Bind(Include = "seat_id,screen_id,seat_row,seat_number")] Seat seat)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(admin).State = EntityState.Modified;
+                db.Entry(seat).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(admin);
+            ViewBag.screen_id = new SelectList(db.Screens, "screen_id", "screen_id", seat.screen_id);
+            return View(seat);
         }
 
-        // GET: Admins/Delete/5
+        // GET: Seats/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Admin admin = db.Admins.Find(id);
-            if (admin == null)
+            Seat seat = db.Seats.Find(id);
+            if (seat == null)
             {
                 return HttpNotFound();
             }
-            return View(admin);
+            return View(seat);
         }
 
-        // POST: Admins/Delete/5
+        // POST: Seats/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Admin admin = db.Admins.Find(id);
-            db.Admins.Remove(admin);
+            Seat seat = db.Seats.Find(id);
+            db.Seats.Remove(seat);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -84,6 +84,12 @@ namespace MovieBooking.Controllers
 
             }
         }
+        public ActionResult Logout()
+        {
+            // Xóa tất cả session khi người dùng đăng xuất
+            Session.Clear();
+            return RedirectToAction("Login");
+        }
 
 
         // GET: Users/Details/5
