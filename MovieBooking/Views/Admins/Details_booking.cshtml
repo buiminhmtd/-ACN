@@ -1,0 +1,42 @@
+﻿@model IEnumerable<MovieBooking.Models.Booking_Details>
+
+@{
+    ViewBag.Title = "Details_booking";
+    Layout = "~/Views/Shared/_LayoutAdmins.cshtml";
+}
+<h3>
+    @Html.DisplayNameFor(model => model.Booking.booking_id)
+
+</h3>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Booking.booking_id)
+        </th>
+        <th>
+            Seat
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.price)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking.booking_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Seat.seat_row)
+                @Html.DisplayFor(modelItem => item.Seat.seat_number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.price)
+            </td>
+        </tr>
+    }
+
+</table>
+
+

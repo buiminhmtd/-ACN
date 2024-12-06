@@ -126,10 +126,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminsController.cs" />
     <Compile Include="Controllers\BookingsController.cs" />
+    <Compile Include="Controllers\Booking_DetailsController.cs" />
     <Compile Include="Controllers\FeaturedShowingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Controllers\ScreensController.cs" />
+    <Compile Include="Controllers\SeatsController.cs" />
     <Compile Include="Controllers\ShowtimesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -252,6 +254,19 @@
     <Content Include="Views\FeaturedShowings\AddSlide.cshtml" />
     <Content Include="Views\FeaturedShowings\EditSlide.cshtml" />
     <Content Include="Views\FeaturedShowings\ManageSlides.cshtml" />
+    <Content Include="Views\Admins\Details.cshtml" />
+    <Content Include="Views\Booking_Details\Create.cshtml" />
+    <Content Include="Views\Booking_Details\Delete.cshtml" />
+    <Content Include="Views\Booking_Details\Details.cshtml" />
+    <Content Include="Views\Booking_Details\Edit.cshtml" />
+    <Content Include="Views\Booking_Details\Index.cshtml" />
+    <Content Include="Views\Admins\Edit.cshtml" />
+    <Content Include="Views\Admins\Details_booking.cshtml" />
+    <Content Include="Views\Seats\Create.cshtml" />
+    <Content Include="Views\Seats\Delete.cshtml" />
+    <Content Include="Views\Seats\Details.cshtml" />
+    <Content Include="Views\Seats\Edit.cshtml" />
+    <Content Include="Views\Seats\Index.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>

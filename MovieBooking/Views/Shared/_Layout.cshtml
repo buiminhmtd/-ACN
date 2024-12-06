@@ -313,8 +313,22 @@
 
                 <div class="auth-buttons">
                     <ul class="navbar-nav flex-grow-1">
-                        <li>@Html.ActionLink("Login", "Login", "Users", new { area = "" }, new { @class = "nav-link" })</li>
-                        <li>@Html.ActionLink("Signup", "Signup", "Users", new { area = "" }, new { @class = "nav-link" })</li>
+
+                        @{
+                            var isUserLoggedIn = Session["user"] != null; // Kiểm tra xem người dùng đã đăng nhập chưa
+                        }
+
+                        @if (isUserLoggedIn)
+                        {
+                            <li style="padding: 10px 0">@Html.ActionLink("Log out", "logout", "Users", new { area = "" }, new { @class = "nav-link" })</li>
+                        }
+                        else
+                        {
+                            <li style="padding: 10px 0">@Html.ActionLink("Log in", "Login", "Users", new { area = "" }, new { @class = "nav-link" })</li>
+
+                        }
+                        <li style="background: #e31c5f; border-radius: 4px;padding: 10px 0">@Html.ActionLink("Signup", "Signup", "Users", new { area = "" }, new { @class = "nav-link" })</li>
+
                     </ul>
                 </div>
             </div>
