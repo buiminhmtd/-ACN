@@ -14,8 +14,8 @@ namespace MovieBooking.Controllers
         public ActionResult Index()
         {
             var slides = db.Featured_Showings
-        .Where(s => s.is_active)
-        .Select(s => new FeaturedShowingsViewModel
+            .Where(s => s.is_active)
+            .Select(s => new FeaturedShowingsViewModel
         {
             movie_image_url = s.Movy.image_url,
             movie_title = s.Movy.title

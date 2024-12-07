@@ -18,7 +18,7 @@
         <p><strong>Mô tả:</strong> @Model.Movie.description</p>
         <div class="movie-actions">
             <a href="@Url.Action("MovieList", "Home")" class="btn btn-secondary">Quay lại danh sách</a>
-            <a href="@Url.Action("BookTicket", "Movies", new { id = Model.Movie.movie_id })" class="btn btn-primary">Đặt vé ngay</a>
+            <a href="@Url.Action("BookTicket", "Bookings", new { id = Model.Movie.movie_id })" class="btn btn-primary">Đặt vé ngay</a>
         </div>
     </div>
 </div>

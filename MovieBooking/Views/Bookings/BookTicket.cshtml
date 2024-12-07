@@ -1,0 +1,190 @@
+﻿@{
+    ViewBag.Title = "BookTicket";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .form-container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 400px;
+    }
+
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-container input, .form-container select, .form-container button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-container button {
+            background: #007bff;
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+            .form-container button:hover {
+                background: #0056b3;
+            }
+
+    /* Màu chữ cho tổng tiền */
+    #totalPrice {
+        text-align: center;
+        font-weight: bold;
+        margin-top: 10px;
+        color: red; /* Tổng tiền màu đỏ */
+    }
+
+    /* Đảm bảo các label nằm bên ngoài các ô input */
+    .form-container input[type="number"] {
+        width: calc(50% - 10px);
+        display: inline-block;
+    }
+
+    .form-container input[type="text"], .form-container input[type="email"], .form-container input[type="tel"] {
+        width: calc(100% - 20px);
+    }
+
+    /* Layout cho label và ô input */
+    .form-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+        .form-row label {
+            width: 40%;
+        }
+
+        .form-row input {
+            width: 50%;
+        }
+</style>
+
+<div class="form-container">
+    <h1>Đặt vé: Avengers: Endgame</h1>
+    <form id="bookingForm">
+        @if (Session["userName"] != null)
+        {
+            <!-- Nếu đã đăng nhập, tự động điền thông tin và không cho phép chỉnh sửa -->
+            <div class="form-row">
+                <label for="name" style="color:black">Họ và tên:</label>
+                <input type="text" id="name" name="name" value="@Session["userName"]" readonly required>
+            </div>
+
+            <div class="form-row">
+                <label for="email" style="color:black">Email:</label>
+                <input type="email" id="email" name="email" value="@Session["userEmail"]" readonly required>
+            </div>
+
+            <div class="form-row">
+                <label for="phone" style="color:black">Số điện thoại:</label>
+                <input type="tel" id="phone" name="phone" value="@Session["userPhone"]" readonly required>
+            </div>
+        }
+        else
+        {
+            <!-- Nếu chưa đăng nhập, yêu cầu người dùng điền thông tin -->
+            <div class="form-row">
+                <label for="name" style="color:black">Họ và tên:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-row">
+                <label for="email" style="color:black">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-row">
+                <label for="phone" style="color:black">Số điện thoại:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+        }
+
+        <!-- Vé thường -->
+        <div class="form-row">
+            <label for="regularSeatQuantity" style="color:black">Số lượng vé Ghế thường (100,000 VNĐ):</label>
+            <input type="number" id="regularSeatQuantity" name="regularSeatQuantity" min="0" value="0" required>
+        </div>
+
+        <!-- Vé VIP -->
+        <div class="form-row">
+            <label for="vipSeatQuantity" style="color:black">Số lượng vé Ghế VIP (150,000 VNĐ):</label>
+            <input type="number" id="vipSeatQuantity" name="vipSeatQuantity" min="0" value="0" required>
+        </div>
+
+        <button type="submit">Đặt vé</button>
+    </form>
+
+    <!-- Hiển thị tổng tiền -->
+    <p id="totalPrice">Tổng tiền: 0 VNĐ</p>
+
+    <!-- Liên kết thanh toán với tham số totalAmount -->
+    <div class="btn btn-success" style="border-top:none;">
+        <a id="paymentLink" href="#">Thanh toán</a>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('bookingForm');
+    const regularSeatQuantity = document.getElementById('regularSeatQuantity');
+    const vipSeatQuantity = document.getElementById('vipSeatQuantity');
+    const totalPriceElement = document.getElementById('totalPrice');
+    const paymentLink = document.getElementById('paymentLink');
+
+    // Cập nhật tổng tiền khi người dùng thay đổi số lượng vé
+    function updateTotalPrice() {
+        const regularSeatPrice = 100000; // Giá ghế thường
+        const vipSeatPrice = 150000; // Giá ghế VIP
+        const regularQuantity = parseInt(regularSeatQuantity.value);
+        const vipQuantity = parseInt(vipSeatQuantity.value);
+
+        // Tính tổng tiền
+        const total = (regularSeatPrice * regularQuantity) + (vipSeatPrice * vipQuantity);
+        totalPriceElement.textContent = `Tổng tiền: ${total.toLocaleString()} VNĐ`; // Hiển thị tổng tiền
+
+        // Cập nhật URL thanh toán với tổng tiền
+        paymentLink.href = `/Bookings/PaymentWithPayPal?totalAmount=${total}`;
+    }
+
+    // Cập nhật tổng tiền khi thay đổi số lượng vé
+    regularSeatQuantity.addEventListener('input', updateTotalPrice);
+    vipSeatQuantity.addEventListener('input', updateTotalPrice);
+
+    // Hiển thị tổng tiền ban đầu
+    updateTotalPrice();
+
+    // Xử lý sự kiện submit form
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Tính tổng tiền
+        const regularSeatPrice = 100000;
+        const vipSeatPrice = 150000;
+        const regularQuantity = parseInt(regularSeatQuantity.value);
+        const vipQuantity = parseInt(vipSeatQuantity.value);
+        const total = (regularSeatPrice * regularQuantity) + (vipSeatPrice * vipQuantity);
+
+        // Hiển thị tổng tiền
+        totalPriceElement.textContent = `Tổng tiền: ${total.toLocaleString()} VNĐ`;
+
+        // Cập nhật lại liên kết thanh toán
+        paymentLink.href = `/Bookings/PaymentWithPayPal?totalAmount=${total}`;
+    });
+</script>

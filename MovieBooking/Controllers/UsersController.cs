@@ -19,6 +19,7 @@ namespace MovieBooking.Controllers
         {
             return View(db.Users.ToList());
         }
+
         public ActionResult Login()
         {
 
@@ -45,6 +46,9 @@ namespace MovieBooking.Controllers
             if (acc != null)
             {
                 Session["user"] = user;
+                Session["userName"] = acc.username;
+                Session["userEmail"] = acc.email;
+                Session["userPhone"] = acc.phone_number;
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -88,7 +92,8 @@ namespace MovieBooking.Controllers
         {
             // Xóa tất cả session khi người dùng đăng xuất
             Session.Clear();
-            return RedirectToAction("Login");
+            Session.Abandon();
+            return RedirectToAction("Index","Home");
         }
 
 
