@@ -1,0 +1,38 @@
+﻿@model IEnumerable<MovieBooking.Models.Feedback>
+
+@{
+    ViewBag.Title = "ManageComments";
+    Layout = "~/Views/Shared/_LayoutAdmins.cshtml";
+}
+
+<h2>Quản Lý Bình Luận</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Người dùng</th>
+            <th>Phim</th>
+            <th>Nội dung</th>
+            <th>Ngày</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var comment in Model)
+        {
+            <tr>
+                <td>@comment.User.username</td> <!-- Nếu có bảng User -->
+                <td>@comment.Movy.title</td> <!-- Nếu có bảng Movie -->
+                <td>@comment.comments</td>
+                <td>@comment.feedback_date.ToString()</td>
+                <td>
+                    <form method="post" action="@Url.Action("DeleteComment", "Movies")">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@comment.feedback_id" />
+                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

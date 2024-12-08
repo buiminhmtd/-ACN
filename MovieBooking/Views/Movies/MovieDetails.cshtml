@@ -65,19 +65,13 @@
         <h4>Bình luận ngay</h4>
         <!-- Kiểm tra nếu người dùng đã đăng nhập -->
         @{
-            if (User.Identity.IsAuthenticated)
+            var isUserLoggedIn = Session["user"] != null; // Kiểm tra session "user"
+            if (isUserLoggedIn)
             {
-                if ((bool)ViewData["HasBookedTicket"])
-                {
                     <form method="post" action="@Url.Action("PostComment", "Movies", new { movieId = Model.Movie.movie_id })">
                         <textarea name="comment" placeholder="Nhập bình luận của bạn..." required></textarea>
                         <button type="submit" class="btn btn-primary">Gửi bình luận</button>
                     </form>
-                }
-                else
-                {
-                    <p>Bạn chưa xem phim này. Bạn phải xem mới được bình luận.</p>
-                }
             }
             else
             {

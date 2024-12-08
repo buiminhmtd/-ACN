@@ -49,6 +49,7 @@ namespace MovieBooking.Controllers
                 Session["userName"] = acc.username;
                 Session["userEmail"] = acc.email;
                 Session["userPhone"] = acc.phone_number;
+                Session["userId"] = acc.user_id;
                 return RedirectToAction("Index", "Home");
             }
             else

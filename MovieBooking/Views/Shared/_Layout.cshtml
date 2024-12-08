@@ -316,10 +316,16 @@
 
                         @{
                             var isUserLoggedIn = Session["user"] != null; // Kiểm tra xem người dùng đã đăng nhập chưa
+                            var username = isUserLoggedIn ? Session["username"].ToString() : null; // Lấy username từ session nếu có
+
                         }
 
                         @if (isUserLoggedIn)
+
                         {
+                            <li style="padding: 10px 0">
+                                <span class="nav-link">Welcome, @username!</span> <!-- Hiển thị username -->
+                            </li>
                             <li style="padding: 10px 0">@Html.ActionLink("Log out", "logout", "Users", new { area = "" }, new { @class = "nav-link" })</li>
                         }
                         else

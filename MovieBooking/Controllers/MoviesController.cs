@@ -227,44 +227,14 @@ namespace MovieBooking.Controllers
 
         // Xử lý gửi bình luận
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult PostComment(int movieId, string comment)
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                // Nếu người dùng chưa đăng nhập, thông báo lỗi
-                TempData["ErrorMessage"] = "Bạn phải đăng nhập để gửi bình luận.";
-                return RedirectToAction("MovieDetails", new { id = movieId });
-            }
-
-            int userId;
-            bool hasBookedTicket;
-            if (int.TryParse(User.Identity.Name, out userId))
-            {
-                hasBookedTicket = db.Bookings
-                    .Join(db.Showtimes, b => b.showtime_id, s => s.showtime_id, (b, s) => new { b, s })
-                    .Any(bs => bs.s.movie_id == movieId && bs.b.user_id == userId);
-            }
-            else
-            {
-                // Nếu không chuyển được User.Identity.Name sang kiểu int, xem như người dùng chưa đăng nhập hoặc ID không hợp lệ
-                hasBookedTicket = false;
-            }
-
-            // Kiểm tra nếu người dùng đã đặt vé xem phim
-            
-
-            if (!hasBookedTicket)
-            {
-                // Nếu chưa đặt vé, thông báo lỗi
-                TempData["ErrorMessage"] = "Bạn phải xem phim trước khi bình luận.";
-                return RedirectToAction("MovieDetails", new { id = movieId });
-            }
+            int userId = (int)Session["userId"];
 
             // Tạo và lưu bình luận mới
             var feedback = new Feedback
             {
-                user_id = int.Parse(User.Identity.Name),
+                user_id = userId,
                 movie_id = movieId,
                 comments = comment,
                 feedback_date = DateTime.Now
@@ -277,6 +247,33 @@ namespace MovieBooking.Controllers
             TempData["SuccessMessage"] = "Bình luận của bạn đã được gửi thành công!";
             return RedirectToAction("MovieDetails", new { id = movieId });
         }
+
+        public ActionResult ManageComments()
+        {
+            // Lấy tất cả bình luận
+            var comments = db.Feedbacks
+                .Include(f => f.User) // Nếu có liên kết với bảng User
+                .Include(f => f.Movy) // Nếu có liên kết với bảng Movie
+                .OrderByDescending(f => f.feedback_date)
+                .ToList();
+
+            return View(comments);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteComment(int id)
+        {
+            var comment = db.Feedbacks.Find(id);
+            if (comment != null)
+            {
+                db.Feedbacks.Remove(comment);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("ManageComments");
+        }
+
+
     }
 
 }
