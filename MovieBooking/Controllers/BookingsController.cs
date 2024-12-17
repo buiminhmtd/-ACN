@@ -9,11 +9,14 @@ using System.Reflection;
 using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
+//using System.Web.Script.Serialization;
 using Microsoft.Ajax.Utilities;
 using System.Web.UI.WebControls;
 using MovieBooking.Models;
 using static System.Net.Mime.MediaTypeNames;
 using PayPal.Api;
+using System.Runtime.Remoting.Contexts;
+using System.Globalization;
 
 namespace MovieBooking.Controllers
 {
@@ -26,6 +29,214 @@ namespace MovieBooking.Controllers
         {
             var bookings = db.Bookings.Include(b => b.Showtime).Include(b => b.User);
             return View(bookings.ToList());
+        }
+        public ActionResult BookTicket(int? id)
+        {
+
+            System.Diagnostics.Debug.WriteLine("Giá trị của biến x: " + 1);
+            // Kiểm tra nếu người dùng đã đăng nhập
+            if (Session["userName"] != null)
+            {
+                // Lấy thông tin người dùng từ session và điền vào form
+                ViewBag.movieid = id.ToString();
+                ViewBag.UserName = Session["userName"];
+                ViewBag.UserEmail = Session["userEmail"];
+                ViewBag.UserPhone = Session["userPhone"];
+                return View(db);
+            }
+            else
+            {
+                // Nếu người dùng chưa đăng nhập, có thể hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập
+                return RedirectToAction("Login", "Users");
+            }
+
+        }
+
+        [HttpGet]
+        public JsonResult GetSeatStatus(int movie_id, String start_time, int screen_id)
+        {
+            System.Diagnostics.Debug.WriteLine(movie_id.ToString());
+            System.Diagnostics.Debug.WriteLine(start_time);
+            System.Diagnostics.Debug.WriteLine(screen_id);
+
+            DateTime startTime = DateTime.Parse(start_time);
+            System.Diagnostics.Debug.WriteLine(startTime);
+
+            // Lấy suất chiếu
+            var showtime = db.Showtimes
+                .SingleOrDefault(st => st.movie_id == movie_id && 
+                st.start_time == startTime && st.screen_id == screen_id);
+
+            //System.Diagnostics.Debug.WriteLine(showtime.showtime_id + " - " + showtime.movie_id);
+
+            try
+            {
+                // Lấy danh sách ghế đã đặt với thông tin đầy đủ từ Booking
+                var bookedSeats = db.Booking_Details
+                    .Where(bd => bd.Booking.showtime_id == showtime.showtime_id) // Include thông tin Booking
+                    .Select(bd => new
+                    {
+                        seat_label = bd.Seat.seat_row + bd.Seat.seat_number,
+                        isBooked = true
+                    })
+                    .ToList();
+
+                foreach (var i in bookedSeats)
+                    System.Diagnostics.Debug.WriteLine(i.seat_label + i.isBooked + i.ToString());
+
+                System.Diagnostics.Debug.WriteLine("10000000000");
+                return Json(bookedSeats, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex) { 
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+
+                return null;
+            }
+
+        }
+        ///////
+        [HttpGet]
+        public JsonResult GetShowTimes(string date)
+        {
+            // Chuyển chuỗi ngày thành DateTime
+            DateTime selectedDate = DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            // Lấy dữ liệu từ database (ví dụ)
+            var showTimes = db.Showtimes
+                .Where(st => st.start_time.HasValue &&
+                            st.start_time.Value.Year == selectedDate.Year &&
+                            st.start_time.Value.Month == selectedDate.Month &&
+                            st.start_time.Value.Day == selectedDate.Day) // So sánh ngày
+                .ToList()  // Lấy toàn bộ dữ liệu vào bộ nhớ
+                .Select(st => new
+                {
+                    time = st.start_time.Value.ToString("HH:mm:ss") // Chuyển đổi giờ sau khi dữ liệu đã được tải vào bộ nhớ
+                })
+                .ToList();
+
+            return Json(showTimes, JsonRequestBehavior.AllowGet);
+        }
+        ////////////////////////////////////
+        //[HttpPost]
+        //public ActionResult CreateBooking(int movieId, string date, string showTime, int screenId, List<string> selectedSeats, decimal totalPrice)
+        //{
+        //    try
+        //    {
+        //        // Kiểm tra đăng nhập
+        //        if (Session["userId"] == null)
+        //        {
+        //            return Json(new
+        //            {
+        //                success = false,
+        //                message = "Vui lòng đăng nhập để đặt vé"
+        //            });
+        //        }
+
+        //        // Lấy user ID từ session
+        //        int userId = Convert.ToInt32(Session["userId"]);
+        //        TimeSpan start_hour = TimeSpan.Parse(showTime);
+        //        DateTime start_time = DateTime.Parse(date + " " + start_hour);
+        //        Showtime st = db.Showtimes.Where(p => p.start_time == start_time && p.movie_id == movieId && p.screen_id == screenId).SingleOrDefault();
+
+        //        System.Diagnostics.Debug.WriteLine();
+        //        // Tạo đối tượng Booking để lưu vào database
+        //        var booking = new Booking
+        //        {
+        //            user_id = userId,
+        //            booking_date = DateTime.Parse(date),
+        //            showtime_id = st.showtime_id,
+        //            total_amount = totalPrice
+        //        };
+        //        db.Bookings.Add(booking);
+        //        db.SaveChanges();
+        //        // Lưu thông tin booking (phần logic tương tự như ví dụ trước)
+
+
+        //        using (var context = new YourDbContext())
+        //        {
+        //            using (var transaction = context.Database.BeginTransaction())
+        //            {
+        //                try
+        //                {
+        //                    // Kiểm tra trạng thái ghế
+        //                    var bookedSeats = context.Seats
+        //                        .Where(s => s.ScreenId == screenId
+        //                               && s.MovieId == movieId
+        //                               && s.BookingDate == DateTime.Parse(date)
+        //                               && s.ShowTime == TimeSpan.Parse(showTime))
+        //                        .Select(s => s.SeatLabel)
+        //                        .ToList();
+
+        //                    // Kiểm tra ghế đã được đặt
+        //                    var conflictSeats = selectedSeats
+        //                        .Intersect(bookedSeats)
+        //                        .ToList();
+
+        //                    if (conflictSeats.Any())
+        //                    {
+        //                        return Json(new
+        //                        {
+        //                            success = false,
+        //                            message = $"Các ghế {string.Join(", ", conflictSeats)} đã được đặt"
+        //                        });
+        //                    }
+
+        //                    // Lưu booking
+        //                    context.Bookings.Add(booking);
+        //                    context.SaveChanges();
+
+        //                    // Lưu chi tiết ghế đặt
+        //                    var seatBookings = selectedSeats.Select(seat => new SeatBooking
+        //                    {
+        //                        BookingId = booking.Id,
+        //                        SeatLabel = seat,
+        //                        ScreenId = screenId,
+        //                        MovieId = movieId,
+        //                        BookingDate = DateTime.Parse(date),
+        //                        ShowTime = TimeSpan.Parse(showTime)
+        //                    });
+
+        //                    context.SeatBookings.AddRange(seatBookings);
+        //                    context.SaveChanges();
+
+        //                    // Commit transaction
+        //                    transaction.Commit();
+
+        //                    return Json(new
+        //                    {
+        //                        success = true,
+        //                        bookingCode = booking.BookingCode,
+        //                        message = "Đặt vé thành công"
+        //                    });
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    // Rollback transaction nếu có lỗi
+        //                    transaction.Rollback();
+        //                    return Json(new
+        //                    {
+        //                        success = false,
+        //                        message = "Đã có lỗi xảy ra: " + ex.Message
+        //                    });
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new
+        //        {
+        //            success = false,
+        //            message = "Đã có lỗi xảy ra: " + ex.Message
+        //        });
+        //    }
+        //}
+
+        // Phương thức sinh mã đặt vé
+        private string GenerateBookingCode()
+        {
+            return "BK" + DateTime.Now.ToString("yyyyMMddHHmmss") +
+                   new Random().Next(1000, 9999).ToString();
         }
 
         // GET: Bookings/Details/5
@@ -127,6 +338,7 @@ namespace MovieBooking.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Booking booking = db.Bookings.Find(id);
+           
             db.Bookings.Remove(booking);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -165,23 +377,7 @@ namespace MovieBooking.Controllers
 
             return View(history);
         }
-        public ActionResult BookTicket(int?id)
-        {
-            // Kiểm tra nếu người dùng đã đăng nhập
-            if (Session["userName"] != null)
-            {
-                // Lấy thông tin người dùng từ session và điền vào form
-                ViewBag.UserName = Session["userName"];
-                ViewBag.UserEmail = Session["userEmail"];
-                ViewBag.UserPhone = Session["userPhone"];
-            }
-            else
-            {
-                // Nếu người dùng chưa đăng nhập, có thể hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập
-                return RedirectToAction("Login", "Users");
-            }
-            return View();
-        }
+
         public ActionResult FailureView()
         {
             return View();
