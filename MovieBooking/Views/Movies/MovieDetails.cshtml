@@ -41,6 +41,10 @@
                 }
             </div>
         }
+        else
+        {
+            <p>Chưa có bình luận cho bộ phim này.</p>
+        }
     }
 
     <!-- Số trang nếu có nhiều bình luận -->
@@ -54,11 +58,6 @@
                 }
             </div>
         }
-
-        else
-        {
-            <p>Chưa có bình luận cho bộ phim này.</p>
-        }
     }
 
     <div class="comment-form">
@@ -68,10 +67,10 @@
             var isUserLoggedIn = Session["user"] != null; // Kiểm tra session "user"
             if (isUserLoggedIn)
             {
-                    <form method="post" action="@Url.Action("PostComment", "Movies", new { movieId = Model.Movie.movie_id })">
-                        <textarea name="comment" placeholder="Nhập bình luận của bạn..." required></textarea>
-                        <button type="submit" class="btn btn-primary">Gửi bình luận</button>
-                    </form>
+                <form method="post" action="@Url.Action("PostComment", "Movies", new { movieId = Model.Movie.movie_id })">
+                    <textarea name="comment" placeholder="Nhập bình luận của bạn..." required></textarea>
+                    <button type="submit" class="btn btn-primary">Gửi bình luận</button>
+                </form>
             }
             else
             {
