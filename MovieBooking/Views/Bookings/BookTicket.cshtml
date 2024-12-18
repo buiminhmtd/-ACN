@@ -184,7 +184,7 @@
     <div class="containerr">
         <div style="display:flex;">
         <div class="movie-header">
-            <img src="~/images/a01.jpg" alt="Avengers: Endgame" class="movie-poster">
+            <img src="@Model.Movies.Find(movie_id).image_url" alt="Avenger" class="movie-poster">
             <div class="movie-info">
                 <h1>@Model.Movies.Where(p => p.movie_id == movie_id).Single().title </h1>
                 <p>@Model.Movies.Where(p => p.movie_id == movie_id).Single().description</p>
@@ -225,12 +225,6 @@
                 <select id="showTimeSelection">
                     <option value="" id="showtimeDisplay">Chọn Xuất Chiếu</option>
 
-                    <option value="11:11:11">11:11 - Xuất Sáng</option>
-                    <option value="10:00">10:00 - Xuất Sáng</option>
-                    <option value="13:00">13:00 - Xuất Trưa</option>
-                    <option value="16:00">16:00 - Xuất Chiều</option>
-                    <option value="19:00">19:00 - Xuất Tối</option>
-                    <option value="22:00">22:00 - Xuất Đêm</option>
                 </select>
             </div>
             <div class="selection-box">
@@ -466,6 +460,7 @@
 
                 //defaultOption.textContent = showTimeSelection.options[showTimeSelection.selectedIndex].text;
                 selectedShowTimeSpan.textContent = showTimeSelection.options[showTimeSelection.selectedIndex].text;
+                //showTimeSelection.textContent = showTimeSelection.options[showTimeSelection.selectedIndex].text;
                 //selectedShowTimeSpan.textContent = defaultOption.textContent;
                 // Cập nhật phòng
                 selectedRoomSpan.textContent = roomSelection.options[roomSelection.selectedIndex].text;
@@ -524,7 +519,7 @@ document.querySelector('.confirm-button').addEventListener('click', function() {
         return;
     }
 
-    if (!showTimeSelection.value) {
+    if (!selectedShowTimeSpan.textContent) {
         alert('Vui lòng chọn xuất chiếu');
         return;
     }
@@ -549,16 +544,16 @@ document.querySelector('.confirm-button').addEventListener('click', function() {
         data: {
             movieId: @movie_id,
             date: dateSelection.value,
-            showTime: showTimeSelection.value,
+            showTime: selectedShowTimeSpan.textContent,
             screenId: roomSelection.value,
             selectedSeats: selectedSeatLabels,
             totalPrice: totalPrice
         },
         success: function(response) {
             if (response.success) {
-                alert('Đặt vé thành công! Mã đặt vé: ' + response.bookingCode);
+                alert('Đặt vé thành công!');
                 // Có thể chuyển trang hoặc làm mới
-                window.location.href = '/Bookings/History';
+               // window.location.href = '/Bookings/History';
             } else {
                 alert(response.message);
             }
