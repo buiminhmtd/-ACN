@@ -181,7 +181,6 @@ namespace MovieBooking.Controllers
                     db.Booking_Details.Add(bd);
                     db.SaveChanges();
                     System.Diagnostics.Debug.WriteLine("booking_detail_id: " + bd.booking_detail_id);
-
                 }
                 return Json(new
                 {
@@ -199,12 +198,6 @@ namespace MovieBooking.Controllers
             }
         }
 
-        // Phương thức sinh mã đặt vé
-        private string GenerateBookingCode()
-        {
-            return "BK" + DateTime.Now.ToString("yyyyMMddHHmmss") +
-                   new Random().Next(1000, 9999).ToString();
-        }
 
         // GET: Bookings/Details/5
         public ActionResult Details(int? id)
