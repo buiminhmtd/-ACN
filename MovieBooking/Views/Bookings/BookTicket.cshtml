@@ -1,218 +1,216 @@
-﻿@model MovieBooking.Models.BookingModel
-    @{ 
-        int movie_id = int.Parse(ViewBag.movieid);
+﻿﻿@model MovieBooking.Models.BookingModel
+@{
+    int movie_id = int.Parse(ViewBag.movieid);
 
+}
+<style>
+
+
+    .containerr {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #333;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
-    <style>
 
+    .selection-container {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
 
-        .containerr {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: #333;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
+    .selection-box {
+        flex: 1;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+    }
 
-        .selection-container {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .selection-box {
-            flex: 1;
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 8px;
-        }
-
-            .selection-box select,
-            .selection-box input {
-                width: 100%;
-                padding: 10px;
-                margin-top: 10px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-            }
-
-        .movie-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 20px;
-        }
-
-        .movie-poster {
-            width: 200px;
-            height: 300px;
-            object-fit: cover;
-            margin-right: 30px;
-            border-radius: 8px;
-        }
-
-        .screen {
+        .selection-box select,
+        .selection-box input {
             width: 100%;
-            height: 50px;
-            background-color: white;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 30px;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .seat-map {
-            
-            display: grid;
-            grid-template-columns: repeat(14, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .seat {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
             padding: 10px;
-            text-align: center;
+            margin-top: 10px;
+            border: 1px solid #ddd;
             border-radius: 5px;
-            cursor: pointer;
-            font-size: 12px;
         }
 
-            .seat.vip {
-                background-color: #FF9800;
-            }
+    .movie-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 20px;
+    }
 
-            .seat.booked {
-                background-color: #9e9e9e;
-                cursor: not-allowed;
-            }
+    .movie-poster {
+        width: 200px;
+        height: 300px;
+        object-fit: cover;
+        margin-right: 30px;
+        border-radius: 8px;
+    }
 
-            .seat.selected {
-                background-color: #2196F3;
-            }
+    .screen {
+        width: 100%;
+        height: 50px;
+        background-color: white;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 30px;
+        color: #333;
+        font-weight: bold;
+    }
 
-        .seat-types {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
+    .seat-map {
+        display: grid;
+        grid-template-columns: repeat(14, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .seat {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px;
+        text-align: center;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+        .seat.vip {
+            background-color: #FF9800;
         }
 
-        .seat-type {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .seat.booked {
+            background-color: #9e9e9e;
+            cursor: not-allowed;
         }
 
-            .seat-type .seat {
-                width: 20px;
-                height: 20px;
-            }
-
-        .booking-summary {
-            background-color: #333;
-            padding: 20px;
-            border: 1px solid white;
-            border-radius: 8px;
-            margin-top: 20px;
+        .seat.selected {
+            background-color: #2196F3;
         }
 
-        .confirm-button {
+    .seat-types {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .seat-type {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .seat-type .seat {
+            width: 20px;
+            height: 20px;
+        }
+
+    .booking-summary {
+        background-color: #333;
+        padding: 20px;
+        border: 1px solid white;
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+
+    .confirm-button {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+        .confirm-button:hover {
+            background-color: #45a049;
+        }
+
+    .hidden {
+        display: none;
+    }
+    /* Style chung cho form */
+    .form-container {
+        width: 100%;
+        max-width: 500px; /* Độ rộng tối đa của form */
+        margin: 0 auto; /* Căn giữa */
+        background-color: transparent;
+        padding-left: 300px;
+        border-radius: 10px;
+    }
+
+    .form-row {
+        margin-bottom: 15px;
+    }
+
+        .form-row label {
             display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #fff; /* Màu chữ sáng */
+        }
+
+        .form-row input {
             width: 100%;
-            padding: 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
+            padding: 10px;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: 20px;
+            background-color: #f9f9f9;
+            color: #333;
         }
 
-            .confirm-button:hover {
-                background-color: #45a049;
+            .form-row input[readonly] {
+                background-color: #e9ecef; /* Màu nhạt hơn cho input readonly */
+                color: #555; /* Chữ màu tối hơn khi readonly */
             }
-
-        .hidden {
-            display: none;
-        }
-        /* Style chung cho form */
-        .form-container {
-            width: 100%;
-            max-width: 500px; /* Độ rộng tối đa của form */
-            margin: 0 auto; /* Căn giữa */
-            background-color: transparent;
-            padding-left: 300px;
-            border-radius: 10px;
-        }
-
-        .form-row {
-            margin-bottom: 15px;
-        }
-
-            .form-row label {
-                display: block;
-                font-weight: bold;
-                margin-bottom: 5px;
-                color: #fff; /* Màu chữ sáng */
-            }
-
-            .form-row input {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                background-color: #f9f9f9;
-                color: #333;
-            }
-
-                .form-row input[readonly] {
-                    background-color: #e9ecef; /* Màu nhạt hơn cho input readonly */
-                    color: #555; /* Chữ màu tối hơn khi readonly */
-                }
-
-    </style>
+</style>
 <body>
     <div class="containerr">
         <div style="display:flex;">
-        <div class="movie-header">
-            <img src="@Model.Movies.Find(movie_id).image_url" alt="Avenger" class="movie-poster">
-            <div class="movie-info">
-                <h1>@Model.Movies.Where(p => p.movie_id == movie_id).Single().title </h1>
-                <p>@Model.Movies.Where(p => p.movie_id == movie_id).Single().description</p>
+            <div class="movie-header">
+                <img src="@Model.Movies.Find(movie_id).image_url" alt="Avenger" class="movie-poster">
+                <div class="movie-info">
+                    <h1>@Model.Movies.Where(p => p.movie_id == movie_id).Single().title </h1>
+                    <p>@Model.Movies.Where(p => p.movie_id == movie_id).Single().description</p>
 
-            </div>
-        </div>
-
-        <div>
-            @if (Session["userName"] != null)
-            {
-                <div class="form-container">
-                    <div class="form-row">
-                        <label for="name">Họ và tên:</label>
-                        <input type="text" id="name" name="name" value="@Session["userName"]" readonly required>
-                    </div>
-
-                    <div class="form-row">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" value="@Session["userEmail"]">
-                    </div>
-
-                    <div class="form-row">
-                        <label for="phone">Số điện thoại:</label>
-                        <input type="tel" id="phone" name="phone" value="@Session["userPhone"]">
-                    </div>
                 </div>
-            }
-        </div>
+            </div>
+
+            <div>
+                @if (Session["userName"] != null)
+                {
+                    <div class="form-container">
+                        <div class="form-row">
+                            <label for="name">Họ và tên:</label>
+                            <input type="text" id="name" name="name" value="@Session["userName"]" readonly required>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" value="@Session["userEmail"]">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="phone">Số điện thoại:</label>
+                            <input type="tel" id="phone" name="phone" value="@Session["userPhone"]">
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
 
         <div class="selection-container">
@@ -312,21 +310,21 @@
 
             </div>
 
-                <div class="seat-types">
-                    <div class="seat-type">
-                        <div class="seat"></div>
-                        <span>Ghế Thường</span>
-                    </div>
-                    <div class="seat-type">
-                        <div class="seat vip"></div>
-                        <span>Ghế VIP</span>
-                    </div>
-                    <div class="seat-type">
-                        <div class="seat booked"></div>
-                        <span>Ghế Đã Đặt</span>
-                    </div>
+            <div class="seat-types">
+                <div class="seat-type">
+                    <div class="seat"></div>
+                    <span>Ghế Thường</span>
+                </div>
+                <div class="seat-type">
+                    <div class="seat vip"></div>
+                    <span>Ghế VIP</span>
+                </div>
+                <div class="seat-type">
+                    <div class="seat booked"></div>
+                    <span>Ghế Đã Đặt</span>
                 </div>
             </div>
+        </div>
 
         <div id="bookingSummary" class="booking-summary hiddenn">
             <h2>Thông Tin Đặt Vé</h2>
@@ -551,9 +549,8 @@ document.querySelector('.confirm-button').addEventListener('click', function() {
         },
         success: function(response) {
             if (response.success) {
-                alert('Đặt vé thành công!');
-                // Có thể chuyển trang hoặc làm mới
-               // window.location.href = '/Bookings/History';
+                const paymentUrl = "/Bookings/PaymentWithPaypal"
+                window.location.href = paymentUrl;
             } else {
                 alert(response.message);
             }

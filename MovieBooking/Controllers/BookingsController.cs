@@ -64,7 +64,7 @@ namespace MovieBooking.Controllers
 
             // Lấy suất chiếu
             var showtime = db.Showtimes
-                .SingleOrDefault(st => st.movie_id == movie_id && 
+                .SingleOrDefault(st => st.movie_id == movie_id &&
                 st.start_time == startTime && st.screen_id == screen_id);
 
             //System.Diagnostics.Debug.WriteLine(showtime.showtime_id + " - " + showtime.movie_id);
@@ -87,7 +87,8 @@ namespace MovieBooking.Controllers
                 System.Diagnostics.Debug.WriteLine("10000000000");
                 return Json(bookedSeats, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex) { 
+            catch (Exception ex)
+            {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
 
                 return null;
@@ -155,6 +156,10 @@ namespace MovieBooking.Controllers
                 };
                 db.Bookings.Add(booking);
                 db.SaveChanges();
+                // Store booking information in the session
+                Session["BookingId"] = booking.booking_id;
+                Session["TotalAmount"] = totalPrice;
+                Session["SelectedSeats"] = selectedSeats;
                 System.Diagnostics.Debug.WriteLine("booking_id: " + booking.booking_id);
 
                 foreach (var seat in selectedSeats)
@@ -298,7 +303,7 @@ namespace MovieBooking.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Booking booking = db.Bookings.Find(id);
-           
+
             db.Bookings.Remove(booking);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -418,20 +423,28 @@ namespace MovieBooking.Controllers
         }
         private PayPal.Api.Payment CreatePayment(APIContext apiContext, string redirectUrl)
         {
+            // Get booking details from session
+            int bookingId = Convert.ToInt32(Session["BookingId"]);
+            decimal totalAmount = Convert.ToDecimal(Session["TotalAmount"]);
+            var selectedSeats = Session["SelectedSeats"] as List<string>;
             //create itemlist and add item objects to it  
             var itemList = new ItemList()
             {
                 items = new List<Item>()
             };
-            //Adding Item Details like name, currency, price etc  
-            itemList.items.Add(new Item()
+            foreach (var seat in selectedSeats)
             {
-                name = "Item Name comes here",
-                currency = "USD",
-                price = "1",
-                quantity = "1",
-                sku = "sku"
-            });
+                //Adding Item Details like name, currency, price etc  
+                itemList.items.Add(new Item()
+                {
+                    name = "Ghế" + seat,
+                    currency = "USD",
+                    price = (totalAmount / selectedSeats.Count).ToString(),
+                    quantity = "1",
+                    sku = seat
+                });
+            }
+            
             var payer = new Payer()
             {
                 payment_method = "paypal"
@@ -445,15 +458,15 @@ namespace MovieBooking.Controllers
             // Adding Tax, shipping and Subtotal details  
             var details = new Details()
             {
-                tax = "1",
-                shipping = "1",
-                subtotal = "1"
+                tax = "0",
+                shipping = "0",
+                subtotal = totalAmount.ToString()
             };
             //Final amount with details  
             var amount = new Amount()
             {
                 currency = "USD",
-                total = "3", // Total must be equal to sum of tax, shipping and subtotal.  
+                total = totalAmount.ToString(), // Total must be equal to sum of tax, shipping and subtotal.  
                 details = details
             };
             var transactionList = new List<Transaction>();
@@ -480,5 +493,3 @@ namespace MovieBooking.Controllers
 
     }
 }
-
-
