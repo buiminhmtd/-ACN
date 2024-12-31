@@ -52,6 +52,23 @@
             height: 100%;
             pointer-events: none;
         }
+
+        .btn-home {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+            .btn-home:hover {
+                background-color: #0056b3;
+            }
     </style>
 </head>
 <body>
@@ -59,6 +76,7 @@
     <canvas class="confetti"></canvas>
     <div class="card">
         <h1>🎉 Đặt vé thành công! 🎉</h1>
+        <a href="@Url.Action("MovieList", "Home")" class="btn-home">Về Trang Chủ</a>
     </div>
     <script>
         const confetti = document.querySelector('.confetti');

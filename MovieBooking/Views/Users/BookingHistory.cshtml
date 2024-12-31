@@ -1,0 +1,52 @@
+﻿@model IEnumerable<MovieBooking.Models.Booking>
+
+@{
+    ViewBag.Title = "BookingHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="history">
+<h2>Lịch sử đặt vé</h2>
+
+@if (ViewBag.Message != null)
+{
+    <p>@ViewBag.Message</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID Đơn</th>
+                <th>Tên phim</th>
+                <th>Thời gian chiếu</th>
+                <th>Ngày đặt vé</th>
+                <th>Tổng tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model)
+            {
+                <tr>
+                    <td>@booking.booking_id</td>
+                    <td>@booking.Showtime.Movy.title</td>
+                    <td>@booking.Showtime.start_time</td>
+                    <td>@booking.booking_date</td>
+                    <td>@booking.total_amount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+</div>
+
+
+<style>
+    .history, .history * {
+        color: #ffffff !important; /* Màu trắng áp dụng cho toàn bộ nội dung trong .history */
+    }
+    .table-bordered th,
+    .table-bordered td {
+        color: #ffffff !important;
+    }
+</style>

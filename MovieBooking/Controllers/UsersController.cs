@@ -193,6 +193,28 @@ namespace MovieBooking.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult BookingHistory()
+        {
+            int userId = Convert.ToInt32(Session["userId"]);
+
+            // Lấy danh sách vé đã đặt theo userId
+            var bookings = db.Bookings
+                             .Include(b => b.Showtime)
+                             .Include(b => b.Showtime.Movy)
+                             .Where(b => b.user_id == userId)
+                             .ToList();
+
+            // Nếu không có vé nào được đặt
+            if (bookings == null || bookings.Count == 0)
+            {
+                ViewBag.Message = "Bạn chưa đặt vé nào";
+                return View();
+            }
+
+            // Truyền danh sách vé đã đặt sang View
+            return View(bookings);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
