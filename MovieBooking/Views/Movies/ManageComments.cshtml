@@ -21,8 +21,8 @@
         @foreach (var comment in Model)
         {
             <tr>
-                <td>@comment.User.username</td> <!-- Nếu có bảng User -->
-                <td>@comment.Movy.title</td> <!-- Nếu có bảng Movie -->
+                <td>@comment.User.username</td>
+                <td>@comment.Movy.title</td>
                 <td>@comment.comments</td>
                 <td>@comment.feedback_date.ToString()</td>
                 <td>

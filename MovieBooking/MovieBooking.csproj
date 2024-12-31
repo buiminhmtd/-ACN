@@ -304,6 +304,7 @@
     <Content Include="Views\Bookings\SuccessView.cshtml" />
     <Content Include="Views\Movies\ManageComments.cshtml" />
     <Content Include="Views\Movies\DeleteComment.cshtml" />
+    <Content Include="Views\Users\BookingHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
