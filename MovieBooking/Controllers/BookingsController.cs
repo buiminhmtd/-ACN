@@ -158,6 +158,7 @@ namespace MovieBooking.Controllers
                 db.SaveChanges();
                 // Store booking information in the session
                 Session["BookingId"] = booking.booking_id;
+                Session["MovieId"] = movieId;
                 Session["TotalAmount"] = totalPrice;
                 Session["SelectedSeats"] = selectedSeats;
                 System.Diagnostics.Debug.WriteLine("booking_id: " + booking.booking_id);
@@ -427,6 +428,9 @@ namespace MovieBooking.Controllers
             int bookingId = Convert.ToInt32(Session["BookingId"]);
             decimal totalAmount = Convert.ToDecimal(Session["TotalAmount"]);
             var selectedSeats = Session["SelectedSeats"] as List<string>;
+            int movieId = Convert.ToInt32(Session["MovieId"]);  // Giả sử bạn đã lưu ID phim trong session
+            var movie = db.Movies.SingleOrDefault(m => m.movie_id == movieId);
+            string movieName = movie != null ? movie.title : "Unknown Movie";  // Nếu không tìm thấy, dùng tên mặc định
             //create itemlist and add item objects to it  
             var itemList = new ItemList()
             {
@@ -434,10 +438,11 @@ namespace MovieBooking.Controllers
             };
             foreach (var seat in selectedSeats)
             {
+                string itemName = $"{movieName} - Ghế {seat}";
                 //Adding Item Details like name, currency, price etc  
                 itemList.items.Add(new Item()
                 {
-                    name = "Ghế" + seat,
+                    name = itemName,
                     currency = "USD",
                     price = (totalAmount / selectedSeats.Count).ToString(),
                     quantity = "1",
