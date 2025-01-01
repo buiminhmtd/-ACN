@@ -92,9 +92,6 @@
             background-color: #9e9e9e;
             cursor: not-allowed;
         }
-        .seat .unavailable {
-            background-color: #9e9e9e;
-        }
         .seat.selected {
             background-color: #2196F3;
         }
@@ -321,10 +318,6 @@
                     <div class="seat vip"></div>
                     <span>Ghế VIP</span>
                 </div>
-                <div class="seat-type">
-                    <div class="seat unavailable"></div>
-                    <span>Ghế Đã Đặt</span>
-                </div>
             </div>
         </div>
 
@@ -397,7 +390,8 @@
                 url: '/Bookings/GetShowTimes',
                 type: 'GET',
                 data: {
-                    date: dateSelection.value
+                    date: dateSelection.value,
+                    movieId: @movie_id
                 },
                 success: function (response) {
                     // Kiểm tra và xử lý dữ liệu trả về

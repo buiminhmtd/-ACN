@@ -1,46 +1,50 @@
 ﻿@model IEnumerable<MovieBooking.Models.Seat>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Quản lý ghế";
     Layout = "~/Views/Shared/_LayoutAdmins.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Quản Lý Ghế</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<div class="mb-3">
+    <a href="@Url.Action("Create", "Seats")" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Thêm Ghế
+    </a>
+</div>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Screen.screen_id)
+            @Html.DisplayNameFor(model => model.Screen.screen_number)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.seat_row)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.seat_number)
+            Seat
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Screen.screen_id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.seat_row)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.seat_number)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.seat_id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.seat_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.seat_id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Screen.screen_number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.seat_row)
+                @Html.DisplayFor(modelItem => item.seat_number)
+            </td>
+            <td class="text-center">
+                <a href="@Url.Action("Edit", "Seats", new { id = item.seat_id })" class="btn btn-warning btn-sm">
+                    <i class="bi bi-pencil-square"></i> Sửa
+                </a>
+                <a href="@Url.Action("Details", "Seats", new { id = item.seat_id })" class="btn btn-info btn-sm">
+                    <i class="bi bi-info-circle"></i> Chi tiết
+                </a>
+                <a href="@Url.Action("Delete", "Seats", new { id = item.seat_id })" class="btn btn-danger btn-sm">
+                    <i class="bi bi-trash"></i> Xóa
+                </a>
+            </td>
+        </tr>
+    }
 
 </table>

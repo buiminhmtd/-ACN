@@ -5,19 +5,11 @@
     Layout = "~/Views/Shared/_LayoutAdmins.cshtml";
 
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+    
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.username)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.password)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.email)
@@ -34,18 +26,21 @@
             @Html.DisplayFor(modelItem => item.username)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.password)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.email)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.phone_number)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.user_id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.user_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.user_id })
+        <td class="text-center">
+            <a href="@Url.Action("Edit", "Users", new { id = item.user_id })" class="btn btn-warning btn-sm">
+                <i class="bi bi-pencil-square"></i> Sửa
+            </a>
+            <a href="@Url.Action("Details", "Users", new { id = item.user_id })" class="btn btn-info btn-sm">
+                <i class="bi bi-info-circle"></i> Chi tiết
+            </a>
+            <a href="@Url.Action("Delete", "Users", new { id = item.user_id })" class="btn btn-danger btn-sm">
+                <i class="bi bi-trash"></i> Xóa
+            </a>
         </td>
     </tr>
 }
