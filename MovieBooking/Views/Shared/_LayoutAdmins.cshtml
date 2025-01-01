@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NamSherlock Admin Dashboard</title>
+    <title>N22 CINEMA Admin Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -198,9 +198,9 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="logo-section">
-            <img src="../../images/logo_meow.png" alt="Logo">
+            <img src="../../images/logo.png" alt="Logo">
             <div class="brand-text">
-                NAM SHERLOCK
+                N22 CINEMA
                 <span class="admin-text">ADMIN</span>
             </div>
         </div>
@@ -229,22 +229,12 @@
             </div>
 
             <div class="user-section">
-                <div class="notification-icon">
-                    <span>🔔</span>
-                    <span class="notification-badge">2</span>
-                </div>
-                <div class="message-icon">
-                    <span>✉️</span>
-                    <span class="notification-badge">5</span>
-                </div>
-                <div class="settings-icon">
-                    ⚙️
-                </div>
+
                 <div class="user-profile">
-                    <img src="../../images/a11.jpg" alt="Admin">
-                    <span>Admin User</span>
-                    <span>▼</span>
+                    <img src="../../images/logo.png" alt="Admin">
+                    <span>Admin: @Session["user"]</span>
                 </div>
+                <div style="padding: 10px 0">@Html.ActionLink("Log out", "logout", "Users", new { area = "" }, new { @class = "btn-danger btn" })</div>
             </div>
         </div>
 

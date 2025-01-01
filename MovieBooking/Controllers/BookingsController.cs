@@ -97,14 +97,15 @@ namespace MovieBooking.Controllers
         }
         ///////
         [HttpGet]
-        public JsonResult GetShowTimes(string date)
+        public JsonResult GetShowTimes(string date, string movieId)
         {
             // Chuyển chuỗi ngày thành DateTime
             DateTime selectedDate = DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
+            int movieID = int.Parse(movieId);
             // Lấy dữ liệu từ database (ví dụ)
             var showTimes = db.Showtimes
-                .Where(st => st.start_time.HasValue &&
+                .Where(st => st.movie_id == movieID &&
+                            st.start_time.HasValue &&
                             st.start_time.Value.Year == selectedDate.Year &&
                             st.start_time.Value.Month == selectedDate.Month &&
                             st.start_time.Value.Day == selectedDate.Day) // So sánh ngày

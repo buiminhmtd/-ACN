@@ -17,7 +17,7 @@ namespace MovieBooking.Controllers
         // GET: Admins
         public ActionResult Index()
         {
-            return View(db.Admins.ToList());
+            return View(db.Movies.ToList());
         }
         
         public ActionResult BillTracking()
