@@ -428,7 +428,7 @@ namespace MovieBooking.Controllers
             int bookingId = Convert.ToInt32(Session["BookingId"]);
             decimal totalAmount = Convert.ToDecimal(Session["TotalAmount"]);
             var selectedSeats = Session["SelectedSeats"] as List<string>;
-            int movieId = Convert.ToInt32(Session["MovieId"]);  // Giả sử bạn đã lưu ID phim trong session
+            int movieId = Convert.ToInt32(Session["MovieId"]);  
             var movie = db.Movies.SingleOrDefault(m => m.movie_id == movieId);
             string movieName = movie != null ? movie.title : "Unknown Movie";  // Nếu không tìm thấy, dùng tên mặc định
             //create itemlist and add item objects to it  
